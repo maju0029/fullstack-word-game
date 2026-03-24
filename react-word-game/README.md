@@ -1,0 +1,1 @@
+# First react + vite projekt. Word game with the pages, infopage, gamepage and a highscore page using a data-base.
