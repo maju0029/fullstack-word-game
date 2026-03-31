@@ -1,23 +1,83 @@
 import { useState } from 'react';
 
 export default function Home() {
-  const [count, setCount] = useState(0)
+  const [wordLength, setWordLength] = useState(5);
+  const [uniqueLetters, setUniqueLetters] = useState(true);
+  const [correctWord, setCorrectWord] = useState("");
+  const [guessWord, setGuessWord] = useState("");
+  const [feedback, setFeedback] = useState([]);
+
+  async function startGame() {
+    const response = await fetch(`/api/word?length=${wordLength}&unique=${uniqueLetters}`);
+    const data = await response.json();
+    setCorrectWord(data.word);
+    setGuessWord("");
+    setFeedback([]);
+  }
+
+  async function handleGuess() {
+
+    if(!correctWord) {
+      alert("Start a game first");
+      return;
+    }
+
+    const response = await fetch("/api/guess", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        correctWord,
+        guessWord
+      })
+    });
+
+    const data = await response.json();
+    setFeedback(data);
+  }
 
   return (
-    <main className="app">
-    <h1>React Word Game</h1>
-    <ul>
-      <li>Highscore</li>
-      <li>Information about the projekt</li>
-    </ul>
-    <p>Välkommen till React Word Game! Här kan du spela ett roligt ordspel och utmana dina vänner. Klicka på knappen nedan för att starta spelet och se hur många ord du kan hitta!</p>
-    <button className="start-button" onClick={() => setCount(count + 1)}>
-      Starta Spelet
-    </button>
-    <p>Du har startat spelet {count} gånger.</p>
-    <p></p>
-    <input type="text" placeholder="hur många bokstäver?" className="word-input"
-    />
-    </main>
+    <div>
+      <h1>Wordle-game</h1>
+
+      <div>
+        <label>Word length: </label>
+        <input
+          type="number"
+          value={wordLength}
+          onChange={(e) => setWordLength(Number(e.target.value))}
+        />
+      </div>
+
+      <div>
+        <label>Unique letters: </label>
+        <input
+          type="checkbox"
+          checked={uniqueLetters}
+          onChange={(e) => setUniqueLetters(e.target.checked)}
+        />
+      </div>
+
+      <button onClick={startGame}>Start game</button>
+
+      <div>
+        <input
+          type="text"
+          value={guessWord}
+          onChange={(e) => setGuessWord(e.target.value)}
+          placeholder="write your guess"
+        />
+        <button onClick={handleGuess}>Guess</button>
+      </div>
+
+      <div>
+        {feedback.map((item, index) => (
+          <p key={index}>
+            {item.letter} - {item.result}
+          </p>
+        ))}
+      </div>
+    </div>
   );
 }
