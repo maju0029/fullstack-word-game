@@ -1,6 +1,7 @@
 import express from "express";
 import algorithm2 from "./algorithms/algorithm2.js";
 import algorithm1 from "./algorithms/algorithm1.js";
+import Highscore from "./database/models/highscore.js";
 
 const app = express();
 app.use(express.json());
@@ -33,6 +34,25 @@ app.post("/api/guess", (req, res) => {
 
   const feedback = algorithm1(correctWord, guessWord);
   res.json(feedback);
+});
+
+app.post("/api/highscore", async (req, res) => {
+  try {
+    const { name, timeMs, guesses, wordLength, uniqueLetters } = req.body;
+
+    const newHighscore = await Highscore.create({
+      name,
+      timeMs,
+      guesses,
+      wordLength,
+      uniqueLetters
+    });
+
+    res.status(201).json(newHighscore);
+
+  } catch (error) {
+    return res.status(400).json({ error: "Invalid highscore data" });
+  }
 });
 
 export default app;
