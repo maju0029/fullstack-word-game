@@ -6,6 +6,7 @@ export default function Home() {
   const [correctWord, setCorrectWord] = useState("");
   const [guessWord, setGuessWord] = useState("");
   const [feedback, setFeedback] = useState([]);
+  const [startTime, setStartTime] = useState(null);
 
   async function startGame() {
     const response = await fetch(`/api/word?length=${wordLength}&unique=${uniqueLetters}`);
@@ -13,6 +14,7 @@ export default function Home() {
     setCorrectWord(data.word);
     setGuessWord("");
     setFeedback([]);
+    setStartTime(Date.now());
   }
 
   async function handleGuess() {
@@ -35,6 +37,14 @@ export default function Home() {
 
     const data = await response.json();
     setFeedback(data);
+
+    // Kollar om gissningen är korrekt. Inital för testning. Ska ändras eller tas bort sen.
+
+    if (guessWord === correctWord) {
+      const totalTime = Date.now() - startTime;
+      alert(`Congratulations! You guessed the word in ${totalTime / 1000} seconds.`);
+      console.log(totalTime);
+    }
   }
 
   return (
