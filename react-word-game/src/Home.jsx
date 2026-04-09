@@ -7,6 +7,7 @@ export default function Home() {
   const [guessWord, setGuessWord] = useState("");
   const [feedback, setFeedback] = useState([]);
   const [startTime, setStartTime] = useState(null);
+  const [guesses, setGuesses] = useState([]);
 
   async function startGame() {
     const response = await fetch(`/api/word?length=${wordLength}&unique=${uniqueLetters}`);
@@ -15,6 +16,7 @@ export default function Home() {
     setGuessWord("");
     setFeedback([]);
     setStartTime(Date.now());
+    setGuesses([]);
   }
 
   async function handleGuess() {
@@ -38,6 +40,8 @@ export default function Home() {
     const data = await response.json();
     setFeedback(data);
 
+    setGuesses(prev => [...prev, guessWord]);
+    
     // Kollar om gissningen är korrekt. Inital för testning. Ska ändras eller tas bort sen.
 
     if (guessWord === correctWord) {
