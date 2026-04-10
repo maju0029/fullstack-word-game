@@ -7,7 +7,10 @@ export default function Home() {
   const [guessWord, setGuessWord] = useState("");
   const [feedback, setFeedback] = useState([]);
   const [startTime, setStartTime] = useState(null);
+  const [timeMs, setTimeMs] = useState(null);
   const [guesses, setGuesses] = useState([]);
+  const [name, setName] = useState("");
+  const [gameWon, setGameWon] = useState(false);
 
   async function startGame() {
     const response = await fetch(`/api/word?length=${wordLength}&unique=${uniqueLetters}`);
@@ -17,6 +20,9 @@ export default function Home() {
     setFeedback([]);
     setStartTime(Date.now());
     setGuesses([]);
+    setGameWon(false);
+    setName("");
+    setTimeMs(null);
   }
 
   async function handleGuess() {
@@ -40,15 +46,35 @@ export default function Home() {
     const data = await response.json();
     setFeedback(data);
 
-    setGuesses(prev => [...prev, guessWord]);
-    
-    // Kollar om gissningen är korrekt. Inital för testning. Ska ändras eller tas bort sen.
+    const updatedGuesses = [...guesses, guessWord];
+    setGuesses(updatedGuesses);
 
     if (guessWord === correctWord) {
       const totalTime = Date.now() - startTime;
-      alert(`Congratulations! You guessed the word in ${totalTime / 1000} seconds.`);
-      console.log(totalTime);
+      setTimeMs(totalTime);
+      setGameWon(true);
+      alert("Congratulations!");
     }
+    setGuessWord("");
+  }
+
+  async function saveHighscore() {
+    const response = await fetch("/api/highscore", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify ({
+        name,
+        timeMs,
+        guesses,
+        wordLength,
+        uniqueLetters
+      })
+    });
+    const data = await response.json();
+     // SKA TAS BORT SENARE
+    console.log(data);
   }
 
   return (
@@ -92,6 +118,20 @@ export default function Home() {
           </p>
         ))}
       </div>
+      {gameWon && (
+        <div>
+          <h2>You won!</h2>
+          <p>Your time: {timeMs} ms</p>
+
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Write your name"
+          />
+          <button onClick={saveHighscore}>Save highscore</button>
+        </div>
+      )}
     </div>
   );
 }
