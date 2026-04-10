@@ -120,7 +120,7 @@ export default function Home() {
       </div>
       {gameWon && (
         <div>
-          <h2>You won!</h2>
+          <h2>You guessed the correct word! Congratulations!</h2>
           <p>Your time: {timeMs} ms</p>
 
           <input

@@ -2,9 +2,14 @@ import express from "express";
 import algorithm2 from "./algorithms/algorithm2.js";
 import algorithm1 from "./algorithms/algorithm1.js";
 import Highscore from "./database/models/highscore.js";
+import { engine } from "express-handlebars";
 
 const app = express();
 app.use(express.json());
+
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", "./views");
 
 let words = [];
 
