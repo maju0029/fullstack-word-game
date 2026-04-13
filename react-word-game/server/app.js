@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
-app.set("views", "./views");
+app.set("views", "./server/views");
 
 let words = [];
 
@@ -57,6 +57,16 @@ app.post("/api/highscore", async (req, res) => {
 
   } catch (error) {
     return res.status(400).json({ error: "Invalid highscore data" });
+  }
+});
+
+app.get("/highscores", async (req, res) => {
+  try {
+    const highscores = await Highscore.find().sort({ timeMs: 1 }).limit(10).lean();
+    res.render("highscores", { highscores });
+
+  } catch (error) {
+    res.status(500).send("Error fetching highscores");
   }
 });
 

@@ -1,0 +1,5 @@
+<ul>
+    {{#each highscores}}
+        <li>{{this.name}}: {{this.timeMs}} ms {{this.guesses}} guesses {{this.wordLength}} letters {{this.uniqueLetters}} </li>
+    {{/each}}
+</ul>
