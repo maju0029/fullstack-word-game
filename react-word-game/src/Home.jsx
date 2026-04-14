@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Letter from './components/Letter.jsx';
 
 export default function Home() {
   const [wordLength, setWordLength] = useState(5);
@@ -73,7 +74,6 @@ export default function Home() {
       })
     });
     const data = await response.json();
-     // SKA TAS BORT SENARE
     console.log(data);
   }
 
@@ -113,9 +113,11 @@ export default function Home() {
 
       <div>
         {feedback.map((item, index) => (
-          <p key={index}>
-            {item.letter} - {item.result}
-          </p>
+          <Letter 
+            key={index}
+            letter={item.letter}
+            result={item.result}
+          />
         ))}
       </div>
       {gameWon && (

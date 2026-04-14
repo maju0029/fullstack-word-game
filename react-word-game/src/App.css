@@ -13,3 +13,21 @@ nav a {
 nav a:hover {
   color: #00ffcc;
 }
+
+.correct {
+  color: green;
+}
+
+.misplaced {
+  color: yellow;
+}
+
+.incorrect {
+  color: red;
+}
+
+.letter {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}

@@ -5,6 +5,7 @@ export default function NavBar() {
         <nav>
             <Link to="/">Home</Link>
             <Link to="/about">About</Link>
+            <a href="/highscores">Highscores</a>
         </nav>
     );
 };
