@@ -6,7 +6,7 @@ import { engine } from "express-handlebars";
 
 const app = express();
 app.use(express.json());
-
+app.use(express.static("public"));
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", "./server/views");
