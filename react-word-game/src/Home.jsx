@@ -77,6 +77,7 @@ export default function Home() {
     });
     const data = await response.json();
     console.log(data);
+    alert("Highscore saved!");
   }
 
   return (

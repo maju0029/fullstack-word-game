@@ -1,9 +1,18 @@
 export default function About() {
     return (
         <div>
-            <h1>Om Projektet</h1>
-            <p>React Word Game är ett enkelt och roligt ordspel byggt med React. Spelet utmanar spelare att hitta så många ord som möjligt inom en viss tid. Det är perfekt för både barn och vuxna som vill förbättra sitt ordförråd och ha kul samtidigt.</p>
-            <p>Projektet är open source och finns på GitHub, där du kan bidra med idéer, buggrapporter eller till och med kod! Vi hoppas att du kommer att njuta av att spela React Word Game lika mycket som vi har haft roligt att skapa det.</p>
+            <h1>About the project</h1>
+             <p>This project is a Wordle-inspired web application where the player tries to guess a hidden word.</p>
+
+             <p>The application is built using React for the frontend and Express/vite (dev server) for the backend.</p>   
+             
+             <p>A local MongoDB (community edition) database is used to store highscores.</p>
+
+             <p>The frontend communicates with the backend through a REST API to fetch words and validate guesses.</p>
+
+             <p>When a player wins, their result can be saved and displayed on the highscore page.</p>
+
+             <p>The highscore page is server-side rendered using Handlebars to demonstrate SSR functionality.</p>
         </div>
     );
 }
