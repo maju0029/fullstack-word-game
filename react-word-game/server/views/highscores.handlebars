@@ -1,5 +1,13 @@
-<ul>
+<ul class="highscore-list">
     {{#each highscores}}
-        <li>{{this.name}}: {{this.timeMs}} ms {{this.guesses}} guesses {{this.wordLength}} letters {{this.uniqueLetters}} </li>
+        <li class="highscore-item">
+            <span class="player-name">{{this.name}}</span>
+            <span class="score-time">{{this.timeMs}} ms</span>
+            <span class="score-guesses">{{this.guesses.length}} guesses</span>
+            <span class="score-length">{{this.wordLength}} letters</span>
+            <span class="score-unique">
+                {{#if this.uniqueLetters}}Unique letters{{else}}Repeated letters allowed{{/if}}
+            </span>
+        </li>
     {{/each}}
 </ul>
