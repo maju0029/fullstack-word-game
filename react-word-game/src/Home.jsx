@@ -33,6 +33,8 @@ export default function Home() {
       return;
     }
 
+    const cleanedGuessWord = guessWord.toLowerCase().trim();
+
     const response = await fetch("/api/guess", {
       method: "POST",
       headers: {
@@ -40,17 +42,17 @@ export default function Home() {
       },
       body: JSON.stringify({
         correctWord,
-        guessWord
+        guessWord: cleanedGuessWord
       })
     });
 
     const data = await response.json();
     setFeedback(data);
 
-    const updatedGuesses = [...guesses, guessWord];
+    const updatedGuesses = [...guesses, cleanedGuessWord];
     setGuesses(updatedGuesses);
 
-    if (guessWord === correctWord) {
+    if (cleanedGuessWord === correctWord) {
       const totalTime = Date.now() - startTime;
       setTimeMs(totalTime);
       setGameWon(true);
@@ -100,7 +102,7 @@ export default function Home() {
       </div>
 
       <button onClick={startGame}>Start game</button>
-
+    {correctWord && (
       <div>
         <input
           type="text"
@@ -110,6 +112,7 @@ export default function Home() {
         />
         <button onClick={handleGuess}>Guess</button>
       </div>
+      )}
 
       <div>
         {feedback.map((item, index) => (
